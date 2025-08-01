@@ -1,0 +1,39 @@
+body {
+  width: 100%;
+  height: 100%;
+  background-color: lightblue;
+}
+.navbar-elements {
+  display: inline;
+  font-size: 50px;
+}
+.navbar {
+  background-color: beige;
+}
+ul {
+  list-style-type: none;
+}
+#home {
+  color: #c0c9ee;
+  text-decoration: none;
+  margin-right: 30px;
+}
+#projects {
+  color: #c0c9ee;
+  text-decoration: none;
+  margin-right: 30px;
+}
+#about {
+  color: #c0c9ee;
+  text-decoration: none;
+  margin-right: 50px;
+}
+#contact {
+  float: right;
+  margin-right: 50px;
+  color: #c0c9ee;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: lightgray;
+}
