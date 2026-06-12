@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PrabhIsLive</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="js/particles.js" defer></script>
+    <script src="js/main.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="preloader-content">
+        <span class="greeting"
+          >Hello · Hola · Bonjour · Namaste · こんにちは · 안녕하세요 ·
+          Привет</span
+        >
+      </div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container nav-container">
+        <a href="#home" class="logo"><img src="assets/Gemini_Generated_Image_o5e5gbo5e5gbo5e5.png" alt="Logo" /></a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact" class="btn btn-sm">Contact</a></li>
+          <li>
+            <button
+              id="music-toggle"
+              class="nav-toggle-button"
+              aria-label="Toggle Music"
+              aria-pressed="false"
+            >
+              Music Off
+            </button>
+          </li>
+          <li>
+            <button id="theme-toggle" aria-label="Toggle Theme">☀</button>
+          </li>
+        </ul>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="scroll-container">
+      <!-- Hero Section -->
+      <section id="home" class="hero section-padding">
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <span class="subtitle hero-animate delay-1"
+              >Computer science student · Full-stack developer</span
+            >
+            <h1 class="hero-animate delay-2">
+              Hi, I'm Prabhjot Singh. I build useful software and keep learning
+              in public.
+            </h1>
+            <p class="role hero-animate delay-3"></p>
+            <p class="bio-short hero-animate delay-4">
+              I focus on full-stack web apps, DSA practice, and product-style
+              interfaces that feel thoughtful, fast, and practical.
+            </p>
+            <div class="cta-group hero-animate delay-5">
+              <a href="#projects" class="btn">View Projects</a>
+              <a href="#contact" class="btn btn-outline">Contact Me</a>
+            </div>
+          </div>
+
+          <aside
+            class="hero-card hero-animate delay-5"
+            aria-label="Profile summary"
+          >
+            <img
+              class="avatar"
+              src="https://avatars.githubusercontent.com/u/184679136?v=4"
+              alt="Prabhjot Singh avatar"
+            />
+            <div>
+              <p class="handle">@Prabhhx07</p>
+              <p class="status">
+                <span></span> Open to internships and collaborations
+              </p>
+            </div>
+            <ul class="quick-facts">
+              <li><strong>Focus</strong><span>Full-stack apps</span></li>
+              <li><strong>Learning</strong><span>DSA + game dev</span></li>
+              <li><strong>Creative</strong><span>Editing + UI polish</span></li>
+            </ul>
+          </aside>
+        </div>
+        <div class="hero-bg-glow"></div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="section-padding">
+        <div class="container">
+          <div class="section-heading fade-in">
+            <span class="eyebrow">About</span>
+            <h2>
+              Building a strong engineering foundation while shipping small,
+              useful products.
+            </h2>
+          </div>
+          <div class="about-grid">
+            <article class="panel fade-in">
+              <h3>How I work</h3>
+              <p>
+                I like turning ideas into working prototypes quickly, then
+                refining them with better structure, UX, and code quality. I’m
+                comfortable moving between frontend UI, backend logic,
+                algorithms, and creative tools.
+              </p>
+            </article>
+            <article class="panel fade-in">
+              <h3>What I’m looking for</h3>
+              <p>
+                I’m looking for internship opportunities where I can contribute
+                to real products, learn from experienced engineers, and keep
+                growing in software development.
+              </p>
+            </article>
+            <article class="panel fade-in"></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="section-padding bg-secondary">
+        <div class="container">
+          <h2 class="fade-in">Tech Stack</h2>
+          <div class="skills-grid fade-in">
+            <div class="skill-item">HTML</div>
+            <div class="skill-item">CSS</div>
+            <div class="skill-item">TailwindCSS</div>
+            <div class="skill-item">Bootstrap</div>
+            <div class="skill-item">JavaScript</div>
+            <div class="skill-item">TypeScript</div>
+            <div class="skill-item">React</div>
+            <div class="skill-item">Next.js</div>
+            <div class="skill-item">Node.js</div>
+            <div class="skill-item">Python</div>
+            <div class="skill-item">PostgreSQL</div>
+            <div class="skill-item">Git</div>
+            <div class="skill-item">GitHub</div>
+            <div class="skill-item">Express.js</div>
+            <div class="skill-item">C</div>
+            <div class="skill-item">C++</div>
+            <div class="skill-item">npm</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="section-padding">
+        <div class="container">
+          <div class="section-heading fade-in">
+            <span class="eyebrow">Projects</span>
+            <h2>Selected work and experiments</h2>
+          </div>
+          <div class="projects-grid">
+            <article class="project-card fade-in">
+              <div class="project-top">
+                <span class="tag">JavaScript · PostgreSQL</span>
+              </div>
+              <h3>Travel Tracker</h3>
+              <p>
+                A web application that helps users log countries they’ve visited
+                with a simple, data-driven interface.
+              </p>
+            </article>
+
+            <article class="project-card fade-in">
+              <div class="project-top">
+                <span class="tag">Electron · JavaScript</span>
+              </div>
+              <h3>Claude Counter</h3>
+              <p>
+                A macOS menu bar app to track Claude message usage and keep an
+                eye on the 45 messages / 5 hour limit.
+              </p>
+            </article>
+
+            <article class="project-card fade-in">
+              <div class="project-top">
+                <span class="tag">React · Product concept</span>
+              </div>
+              <h3>Self Cleaning Suit</h3>
+              <p>
+                A React and TypeScript project exploring an interactive product
+                concept with animated presentation and polished UI flow.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section-padding">
+        <div class="container contact-container fade-in">
+          <h2>Get In Touch</h2>
+          <p>
+            Currently open for new opportunities. Whether you have a question or
+            just want to say hi, I'll try my best to get back to you!
+          </p>
+          <a href="mailto:prabhjots2005@gmail.com" class="btn">Say Hello</a>
+
+          <div class="social-links">
+            <a href="https://github.com/Prabhhx07">GitHub</a>
+            <a href="https://www.linkedin.com/in/prabhjot-singh-4a7a67302/"
+              >LinkedIn</a
+            >
+            <a href="https://x.com/Prabhh_7">Twitter</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
