@@ -51,17 +51,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // After attempting auto-start, if the track exists but is paused
   // (autoplay likely blocked), prompt user to click to enable.
-  window.setTimeout(() => {
-    try {
-      if (musicState.track && musicState.track.paused) {
-        if (musicToggle) {
-          musicToggle.textContent = "Click to enable music";
-          musicToggle.classList.add("requires-interaction");
-          setMusicButtonState(false);
-        }
+  // After preloader: try to play; if blocked, auto-start on first interaction
+window.setTimeout(() => {
+  try {
+    if (musicState.track && musicState.track.paused) {
+      const startOnInteraction = () => {
+        startMusic();
+        ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+          window.removeEventListener(evt, startOnInteraction)
+        );
+      };
+      ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+        window.addEventListener(evt, startOnInteraction, { once: true })
+      );
+
+      if (musicToggle) {
+        musicToggle.textContent = "Click to enable music";
+        musicToggle.classList.add("requires-interaction");
       }
-    } catch (e) {}
-  }, 2200);
+    }
+  } catch (e) {}
+}, 2200);
   // After preloader is hidden, reveal hero and start typing
   window.setTimeout(() => {
     try {
