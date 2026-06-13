@@ -17,19 +17,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hide preloader after page load and brief intro animation
   const preloader = document.getElementById("preloader");
   if (preloader) {
+    // Show the combined greetings (set in HTML) and hide preloader
+    // after a short, consistent delay so all languages are visible.
     function hidePreloader() {
-      preloader.classList.add("preloader-hidden");
-      preloader.style.display = "none";
-      document.body.classList.add("loaded");
-      if (typeof typeWriter === "function") typeWriter();
-      if (!musicState.track) musicState.track = createRequestedTrack();
-      startMusic();
+      try {
+        preloader.classList.add("preloader-hidden");
+      } catch (e) {}
+      try {
+        preloader.style.display = "none";
+      } catch (e) {}
+      try {
+        document.body.classList.add("loaded");
+      } catch (e) {}
+      try {
+        if (typeof typeWriter === "function") typeWriter();
+      } catch (e) {}
+      // Ensure music is enabled by default: set UI and attempt to start playback
+      try {
+        localStorage.setItem("musicEnabled", "true");
+        setMusicButtonState(true);
+        // create track early so browser can start loading it
+        if (!musicState.track) musicState.track = createRequestedTrack();
+        // attempt to play; if blocked, startMusic will handle failure
+        startMusic();
+      } catch (e) {}
     }
 
+    // allow user to click the preloader to dismiss immediately
     preloader.addEventListener("click", hidePreloader, { once: true });
 
     // fallback hide after short delay
   }
+  // After attempting auto-start, if the track exists but is paused
+  // (autoplay likely blocked), prompt user to click to enable.
 
   function createRequestedTrack() {
     // Use the user-provided Strawberry Guy track in the music folder
@@ -96,11 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setMusicButtonState(isActive) {
-    if (!musicToggle) {
-      return;
-    }
-
-    musicToggle.textContent = isActive ? "Music On" : "Music Off";
+    if (!musicToggle) return;
+    const label = musicToggle.querySelector("#music-fab-label");
+    if (label) label.textContent = isActive ? "Music On" : "Music Off";
+    else musicToggle.textContent = isActive ? "Music On" : "Music Off";
     musicToggle.classList.toggle("is-active", isActive);
     musicToggle.setAttribute("aria-pressed", String(isActive));
   }
@@ -115,29 +134,20 @@ document.addEventListener("DOMContentLoaded", () => {
       musicState.isPlaying = true;
       setMusicButtonState(true);
       localStorage.setItem("musicEnabled", "true");
+      localStorage.setItem("musicMode", "track");
       return true;
     } catch (error) {
-      // Autoplay blocked — attach listeners immediately so the
-      // very next interaction (scroll, click, key) starts music
-      if (!musicState._interactionListenerAdded) {
-        musicState._interactionListenerAdded = true;
-        const startOnInteraction = () => {
-          ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
-            window.removeEventListener(evt, startOnInteraction),
-          );
-          musicState._interactionListenerAdded = false;
-          startMusic();
-        };
-        ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
-          window.addEventListener(evt, startOnInteraction, { once: true }),
-        );
-      }
-
-      setMusicButtonState(false);
-      if (musicToggle) {
-        musicToggle.textContent = "Click to enable music";
-        musicToggle.classList.add("requires-interaction");
-      }
+      console.error("Requested track could not be played:", error);
+      // If autoplay is blocked, indicate the toggle requires user interaction
+      try {
+        setMusicButtonState(false);
+        if (musicToggle) {
+          musicToggle.textContent = "Click to enable music";
+          musicToggle.classList.add("requires-interaction");
+        }
+      } catch (e) {}
+      localStorage.setItem("musicEnabled", "false");
+      localStorage.setItem("musicMode", "off");
       return false;
     }
   }

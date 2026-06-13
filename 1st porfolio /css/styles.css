@@ -1064,3 +1064,120 @@ section {
 #preloader {
   cursor: pointer;
 }
+/* ── Music FAB ── */
+.music-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 15, 20, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+.music-fab:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+.music-fab.is-active {
+  border-color: rgba(120, 200, 120, 0.5);
+  color: #8deba8;
+}
+.music-fab svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── Resume button ── */
+.btn-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+.btn-resume:hover {
+  opacity: 1;
+}
+
+/* ── Skills grouped ── */
+.skills-category {
+  margin-bottom: 2.5rem;
+}
+.skills-category:last-child {
+  margin-bottom: 0;
+}
+.skills-category-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+}
+.skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* ── Project links ── */
+.project-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+.project-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+.project-link:hover {
+  opacity: 1;
+}
+
+/* ── About interests panel ── */
+.interest-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.interest-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.interest-list li::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
