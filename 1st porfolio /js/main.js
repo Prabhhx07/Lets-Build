@@ -52,26 +52,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // After attempting auto-start, if the track exists but is paused
   // (autoplay likely blocked), prompt user to click to enable.
   // After preloader: try to play; if blocked, auto-start on first interaction
-window.setTimeout(() => {
-  try {
-    if (musicState.track && musicState.track.paused) {
-      const startOnInteraction = () => {
-        startMusic();
-        ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
-          window.removeEventListener(evt, startOnInteraction)
-        );
-      };
-      ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
-        window.addEventListener(evt, startOnInteraction, { once: true })
-      );
+// window.setTimeout(() => {
+//   try {
+//     if (musicState.track && musicState.track.paused) {
+//       const startOnInteraction = () => {
+//         startMusic();
+//         ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+//           window.removeEventListener(evt, startOnInteraction)
+//         );
+//       };
+//       ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+//         window.addEventListener(evt, startOnInteraction, { once: true })
+//       );
 
-      if (musicToggle) {
-        musicToggle.textContent = "Click to enable music";
-        musicToggle.classList.add("requires-interaction");
-      }
-    }
-  } catch (e) {}
-}, 2200);
+//       if (musicToggle) {
+//         musicToggle.textContent = "Click to enable music";
+//         musicToggle.classList.add("requires-interaction");
+//       }
+//     }
+//   } catch (e) {}
+// }, 2200);
   // After preloader is hidden, reveal hero and start typing
   window.setTimeout(() => {
     try {
@@ -159,32 +159,41 @@ window.setTimeout(() => {
   }
 
   async function startMusic() {
-    if (!musicState.track) {
-      musicState.track = createRequestedTrack();
+  if (!musicState.track) {
+    musicState.track = createRequestedTrack();
+  }
+
+  try {
+    await musicState.track.play();
+    musicState.isPlaying = true;
+    setMusicButtonState(true);
+    localStorage.setItem("musicEnabled", "true");
+    return true;
+  } catch (error) {
+    // Autoplay blocked — attach listeners immediately so the
+    // very next interaction (scroll, click, key) starts music
+    if (!musicState._interactionListenerAdded) {
+      musicState._interactionListenerAdded = true;
+      const startOnInteraction = () => {
+        ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+          window.removeEventListener(evt, startOnInteraction)
+        );
+        musicState._interactionListenerAdded = false;
+        startMusic();
+      };
+      ["click", "keydown", "touchstart", "scroll"].forEach((evt) =>
+        window.addEventListener(evt, startOnInteraction, { once: true })
+      );
     }
 
-    try {
-      await musicState.track.play();
-      musicState.isPlaying = true;
-      setMusicButtonState(true);
-      localStorage.setItem("musicEnabled", "true");
-      localStorage.setItem("musicMode", "track");
-      return true;
-    } catch (error) {
-      console.error("Requested track could not be played:", error);
-      // If autoplay is blocked, indicate the toggle requires user interaction
-      try {
-        setMusicButtonState(false);
-        if (musicToggle) {
-          musicToggle.textContent = "Click to enable music";
-          musicToggle.classList.add("requires-interaction");
-        }
-      } catch (e) {}
-      localStorage.setItem("musicEnabled", "false");
-      localStorage.setItem("musicMode", "off");
-      return false;
+    setMusicButtonState(false);
+    if (musicToggle) {
+      musicToggle.textContent = "Click to enable music";
+      musicToggle.classList.add("requires-interaction");
     }
+    return false;
   }
+}
 
   async function stopMusic() {
     if (musicState.track) {
