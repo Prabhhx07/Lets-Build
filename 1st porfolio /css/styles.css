@@ -1041,3 +1041,26 @@ section {
     order: -1;
   }
 }
+
+.enter-hint {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+#preloader {
+  cursor: pointer;
+}
