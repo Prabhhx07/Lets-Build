@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Page transition overlay and player state
   const pageTransition = document.createElement("div");
   pageTransition.className = "page-transition-overlay";
   document.body.appendChild(pageTransition);
@@ -14,11 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     isPlaying: false,
   };
 
-  // Hide preloader after page load and brief intro animation
   const preloader = document.getElementById("preloader");
   if (preloader) {
-    // Show the combined greetings (set in HTML) and hide preloader
-    // after a short, consistent delay so all languages are visible.
     function hidePreloader() {
       try {
         preloader.classList.add("preloader-hidden");
@@ -32,27 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         if (typeof typeWriter === "function") typeWriter();
       } catch (e) {}
-      // Ensure music is enabled by default: set UI and attempt to start playback
+
       try {
         localStorage.setItem("musicEnabled", "true");
         setMusicButtonState(true);
-        // create track early so browser can start loading it
+
         if (!musicState.track) musicState.track = createRequestedTrack();
-        // attempt to play; if blocked, startMusic will handle failure
+
         startMusic();
       } catch (e) {}
     }
 
-    // allow user to click the preloader to dismiss immediately
     preloader.addEventListener("click", hidePreloader, { once: true });
-
-    // fallback hide after short delay
   }
-  // After attempting auto-start, if the track exists but is paused
-  // (autoplay likely blocked), prompt user to click to enable.
 
   function createRequestedTrack() {
-    // Use the user-provided Strawberry Guy track in the music folder
     const trackPath = encodeURI(
       "music/Strawberry_Guy_-_Mrs_Magic_Strings_Version_(mp3.pm).mp3",
     );
@@ -138,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     } catch (error) {
       console.error("Requested track could not be played:", error);
-      // If autoplay is blocked, indicate the toggle requires user interaction
+
       try {
         setMusicButtonState(false);
         if (musicToggle) {
@@ -194,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Intersection Observer for Fade-in Animations
   const observerOptions = {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
@@ -204,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
-        observer.unobserve(entry.target); // Only animate once
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
@@ -213,9 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el);
   });
 
-  // Typing Effect
   const roleElement = document.querySelector(".role");
-  const roleText = "Full-stack developer | DSA learner | Game-dev explorer";
+  const roleText = "Full-stack developer | Video-Editor | Game-dev explorer";
   let charIndex = 0;
 
   function typeWriter() {
@@ -225,34 +213,38 @@ document.addEventListener("DOMContentLoaded", () => {
       charIndex++;
       setTimeout(typeWriter, 60);
     } else {
-      // When typing finishes, optionally start/change other UI loops
       if (typeof changeGreeting === "function") {
         changeGreeting();
       }
     }
   }
 
-  // Navbar Scroll Effect (Optional: add background on scroll)
   const navbar = document.querySelector(".navbar");
+  const scrollProgress = document.getElementById("scroll-progress");
+
   window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
       navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.5)";
     } else {
       navbar.style.boxShadow = "none";
     }
+
+    if (scrollProgress) {
+      const scrollTotal =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (window.scrollY / scrollTotal) * 100;
+      scrollProgress.style.width = scrollPercent + "%";
+    }
   });
 
-  // Mobile Navigation
   const hamburger = document.querySelector(".hamburger");
   const navLinks = document.querySelector(".nav-links");
   const links = document.querySelectorAll(".nav-links li");
 
   hamburger.addEventListener("click", () => {
-    // Toggle Nav
     navLinks.classList.toggle("nav-active");
     hamburger.classList.toggle("active");
 
-    // Animate Links
     links.forEach((link, index) => {
       if (link.style.animation) {
         link.style.animation = "";
@@ -264,7 +256,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Close menu when clicking a link
   document.querySelectorAll(".nav-links a").forEach((link) => {
     link.addEventListener("click", () => {
       navLinks.classList.remove("nav-active");
@@ -301,11 +292,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Theme Switcher
   const themeToggle = document.getElementById("theme-toggle");
   const body = document.body;
 
-  // Check saved theme
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
     body.setAttribute("data-theme", savedTheme);
@@ -329,8 +318,60 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateParticles(theme) {
-    // Dispatch custom event for particles.js to listen to
     const event = new CustomEvent("themeChange", { detail: { theme: theme } });
     window.dispatchEvent(event);
   }
+
+  const statsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll(".stat-number");
+          counters.forEach((counter) => {
+            const target = +counter.getAttribute("data-target");
+            const duration = 2000;
+            const increment = target / (duration / 16);
+
+            let current = 0;
+            const updateCounter = () => {
+              current += increment;
+              if (current < target) {
+                counter.innerText = Math.ceil(current);
+                requestAnimationFrame(updateCounter);
+              } else {
+                counter.innerText = target + (target > 10 ? "+" : "");
+              }
+            };
+            updateCounter();
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  const statsSection = document.getElementById("stats");
+  if (statsSection) {
+    statsObserver.observe(statsSection);
+  }
+
+  const sections = document.querySelectorAll("section[id]");
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (scrollY >= sectionTop - 250) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    document.querySelectorAll(".nav-links a").forEach((a) => {
+      a.classList.remove("active");
+      if (a.getAttribute("href") === `#${current}`) {
+        a.classList.add("active");
+      }
+    });
+  });
 });

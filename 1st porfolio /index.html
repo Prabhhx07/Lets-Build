@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio</title>
+    <meta
+      name="description"
+      content="Prabhjot Singh is a computer science student and full-stack developer building useful software. Explore projects, skills, and get in touch."
+    />
     <link rel="icon" type="image/png" href="assets/portfolio.png" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,7 +18,11 @@
     />
     <script src="js/particles.js" defer></script>
     <script src="js/main.js" defer></script>
-    <!-- Vercel Web Analytics -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"
+      defer
+    ></script>
+
     <script>
       window.va =
         window.va ||
@@ -26,6 +34,7 @@
   </head>
 
   <body>
+    <div id="scroll-progress"></div>
     <!-- Preloader -->
     <div id="preloader">
       <div class="preloader-content">
@@ -82,10 +91,8 @@
               interfaces that feel thoughtful, fast, and practical.
             </p>
             <div class="cta-group hero-animate delay-5">
-              <a href="#projects" class="btn">View Projects</a>
-              <a href="#contact" class="btn btn-outline">Contact Me</a>
               <a
-                href="assets/Prabhjot_Singh_Resume.docx"
+                href="assets/Prabhjot_Singh_Resume_.pdf"
                 download
                 class="btn btn-outline btn-resume"
               >
@@ -134,6 +141,27 @@
         <div class="hero-bg-glow"></div>
       </section>
 
+      <!-- GitHub Stats Strip -->
+      <section id="stats" class="stats-strip">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-chip fade-in">
+              <span class="stat-number" data-target="6">0</span>
+              <span class="stat-label">Repositories</span>
+            </div>
+            <div class="stat-chip fade-in">
+              <span class="stat-number" data-target="35">0</span>
+              <span class="stat-label">Commits</span>
+            </div>
+
+            <div class="stat-chip fade-in">
+              <span class="stat-number" data-target="3">0</span>
+              <span class="stat-label">Live Projects</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- About Section -->
       <section id="about" class="section-padding">
         <div class="container">
@@ -159,7 +187,8 @@
               <p>
                 I’m looking for internship opportunities where I can contribute
                 to real products, learn from experienced engineers, and keep
-                growing in software development.
+                growing in software development.Doesn't matter if I get paid or
+                not, just wanna learn.
               </p>
             </article>
             <article class="panel fade-in">
@@ -218,7 +247,8 @@
           </div>
         </div>
       </section>
-      <!-- Projects Section -->
+
+      <!-- projects-->
       <section id="projects" class="section-padding">
         <div class="container">
           <div class="section-heading fade-in">
@@ -226,9 +256,89 @@
             <h2>Selected work and experiments</h2>
           </div>
           <div class="projects-grid">
-            <article class="project-card fade-in">
+            <article
+              class="project-card fade-in featured"
+              data-tilt
+              data-tilt-max="8"
+              data-tilt-speed="400"
+              data-tilt-glare
+              data-tilt-max-glare="0.1"
+            >
               <div class="project-top">
-                <span class="tag">JavaScript · PostgreSQL</span>
+                <span class="tag">React · Node.js · PostgreSQL · Redis</span>
+                <span class="project-badge">Featured</span>
+              </div>
+              <h3>Project-D</h3>
+              <p>
+                A full-stack multi-tenant SaaS platform for document processing
+                and collaboration. Self-built JWT auth, role-based access
+                control, BullMQ background processing, WebSocket real-time
+                notifications, Redis caching, rate limiting, audit logging, and
+                CI/CD pipeline.
+              </p>
+              <div class="project-links">
+                <a
+                  href="https://github.com/Prabhhx07/project-d"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-link"
+                  id="project-d-github"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    ></path>
+                  </svg>
+                  GitHub
+                </a>
+                <a
+                  href="https://project-d-omega.vercel.app"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-link"
+                  id="project-d-live"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    ></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  Live Site
+                </a>
+              </div>
+            </article>
+            <article
+              class="project-card fade-in"
+              data-tilt
+              data-tilt-max="8"
+              data-tilt-speed="400"
+              data-tilt-glare
+              data-tilt-max-glare="0.1"
+            >
+              <div class="project-top">
+                <span class="tag">JavaScript · Node.js · PostgreSQL</span>
               </div>
               <h3>Travel Tracker</h3>
               <p>
@@ -237,9 +347,41 @@
                 features user auth, session persistence, and a colour-coded
                 world map that updates in real time.
               </p>
+              <div class="project-links">
+                <a
+                  href="https://github.com/Prabhhx07/Travel-Tracker"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-link"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    ></path>
+                  </svg>
+                  GitHub
+                </a>
+              </div>
             </article>
 
-            <article class="project-card fade-in">
+            <article
+              class="project-card fade-in"
+              data-tilt
+              data-tilt-max="8"
+              data-tilt-speed="400"
+              data-tilt-glare
+              data-tilt-max-glare="0.1"
+            >
               <div class="project-top">
                 <span class="tag">Electron · JavaScript</span>
               </div>
@@ -250,19 +392,31 @@
                 limit. Shows a live countdown so power users never get cut off
                 mid-session.
               </p>
-            </article>
-
-            <article class="project-card fade-in">
-              <div class="project-top">
-                <span class="tag">React </span>
+              <div class="project-links">
+                <a
+                  href="https://github.com/Prabhhx07/claude-counter"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-link"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    ></path>
+                  </svg>
+                  GitHub
+                </a>
               </div>
-              <h3>Self Cleaning Suit</h3>
-              <p>
-                Interactive product concept built in React and TypeScript with
-                scroll-driven animations, a multi-step feature breakdown, and a
-                polished mobile-first UI. Focused on frontend craft and
-                presentation design.
-              </p>
             </article>
           </div>
         </div>
@@ -280,13 +434,19 @@
 
           <div class="social-links">
             <a
+              href="https://www.instagram.com/prabhh_.7/"
+              target="_blank"
+              rel="noopener"
+              >Instagram
+            </a>
+            <a
               href="https://github.com/Prabhhx07"
               target="_blank"
               rel="noopener"
               >GitHub</a
             >
             <a
-              href="https://www.linkedin.com/in/prabhjot-singh-4a7a67302/"
+              href="https://www.linkedin.com/in/prabhhx07/"
               target="_blank"
               rel="noopener"
               >LinkedIn</a
@@ -298,7 +458,19 @@
         </div>
       </section>
     </main>
-    <!-- Music FAB -->
+
+
+    <footer class="site-footer">
+      <center>
+        <div class="container footer-content">
+          <p class="footer-copy">
+            © 2026 Prabhjot Singh. Made with ❤️ in India.
+          </p>
+        </div>
+      </center>
+    </footer>
+
+
     <button
       id="music-toggle"
       aria-label="Toggle Music"
