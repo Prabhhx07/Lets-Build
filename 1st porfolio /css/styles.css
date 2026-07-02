@@ -1,15 +1,11 @@
-/* Modern Theme Variables */
 :root {
-  /* Default: Cyberpunk Neon */
   --bg-primary: #05000a;
   --bg-secondary: #0b0014;
   --text-primary: #ffffff;
   --text-secondary: #d1d1d1;
   --accent: #d67bff;
-  /* Electric Lavender */
   --accent-glow: rgba(214, 123, 255, 0.5);
   --accent-secondary: #05d9e8;
-  /* Cyan */
   --card-bg: rgba(20, 0, 30, 0.6);
   --nav-bg: rgba(5, 0, 10, 0.9);
 
@@ -25,15 +21,14 @@
   --text-primary: #1a1a1a;
   --text-secondary: #555555;
   --accent: #3b82f6;
-  /* Blue */
+
   --accent-glow: rgba(59, 130, 246, 0.3);
   --accent-secondary: #8b5cf6;
-  /* Purple */
+
   --card-bg: #ffffff;
   --nav-bg: rgba(255, 255, 255, 0.9);
 }
 
-/* Scroll Progress Bar */
 #scroll-progress {
   position: fixed;
   top: 0;
@@ -46,7 +41,6 @@
   box-shadow: 0 0 10px var(--accent-glow);
 }
 
-/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -64,7 +58,6 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   overflow-y: hidden;
-  /* Prevent vertical scroll on body */
 }
 
 main {
@@ -105,17 +98,15 @@ body.page-transitioning main {
   opacity: 1;
 }
 
-/* Zigzag Scroll Container */
 .scroll-container {
   display: grid;
   width: 300vw;
   height: 300vh;
   grid-template-columns: 100vw 100vw 100vw;
   grid-template-rows: 100vh 100vh 100vh;
-  overflow: hidden; /* Disable native scroll, JS controls it */
+  overflow: hidden;
 }
 
-/* Section Positioning */
 #home {
   grid-column: 1;
   grid-row: 1;
@@ -137,7 +128,6 @@ body.page-transitioning main {
   grid-row: 3;
 }
 
-/* Sections Base Styles */
 section {
   width: 100vw;
   height: 100vh;
@@ -145,7 +135,7 @@ section {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding-top: 80px; /* Navbar height */
+  padding-top: 80px;
 }
 
 #bg-canvas {
@@ -172,7 +162,6 @@ img {
   display: block;
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -195,7 +184,6 @@ h1 {
   text-shadow: 0 0 20px var(--accent-glow);
 }
 
-/* Theme Toggle */
 #theme-toggle {
   background: none;
   border: 1px solid var(--accent);
@@ -310,7 +298,6 @@ p {
   }
 }
 
-/* Animations */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -338,12 +325,10 @@ p {
   }
 }
 
-/* Only animate when the parent has the 'loaded' class */
 .loaded .hero-animate {
   animation: slideUpBlur 0.8s ease forwards;
 }
 
-/* Default state for hero-animate before loading */
 .hero-animate {
   opacity: 0;
 }
@@ -368,7 +353,6 @@ p {
   animation-delay: 0.9s;
 }
 
-/* Typing Cursor */
 .role::after {
   content: "|";
   animation: blink 1s infinite;
@@ -385,7 +369,6 @@ p {
   }
 }
 
-/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -478,8 +461,6 @@ p {
   flex-shrink: 0;
 }
 
-/* Hero Section */
-
 .hero-content {
   position: relative;
   right: 12%;
@@ -524,7 +505,6 @@ p {
   z-index: 1;
 }
 
-/* About Section */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -547,7 +527,6 @@ p {
   margin-bottom: 0.5rem;
 }
 
-/* Skills Section */
 .bg-secondary {
   background-color: var(--bg-secondary);
 }
@@ -572,7 +551,6 @@ p {
   transform: translateY(-5px);
 }
 
-/* Projects Section */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -637,7 +615,6 @@ p {
   color: var(--accent);
 }
 
-/* Contact Section */
 .contact-container {
   text-align: center;
   max-width: 600px;
@@ -659,7 +636,6 @@ p {
   color: var(--accent);
 }
 
-/* Footer */
 footer {
   padding: 2rem 0;
   text-align: center;
@@ -668,7 +644,6 @@ footer {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Hamburger Menu */
 .hamburger {
   display: none;
   cursor: pointer;
@@ -683,7 +658,6 @@ footer {
   transition: all 0.3s ease;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   h1 {
     font-size: 2.5rem;
@@ -694,7 +668,6 @@ footer {
     z-index: 1001;
   }
 
-  /* Hamburger Animation */
   .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
@@ -761,7 +734,6 @@ footer {
   }
 }
 
-/* Refresh layout for the current vertical portfolio structure */
 body {
   overflow-y: auto;
 }
