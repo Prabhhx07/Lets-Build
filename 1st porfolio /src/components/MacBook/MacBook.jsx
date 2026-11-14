@@ -8,8 +8,8 @@ import { ScreenScale } from "./ScreenScale.js";
 gsap.registerPlugin(ScrollTrigger);
 
 // The macOS UI is laid out on a fixed logical display and scaled to the glass, like a real Retina screen.
-const LOGICAL_W = 1280;
-const LOGICAL_H = 832;
+const BASE_W = 1280;
+const BASE_H = 832;
 
 const PAD = 0.009; // bezel thickness as a fraction of laptop width
 const LID_OPEN = 12; // lid angle past vertical (degrees)
@@ -25,18 +25,23 @@ const rotX = (y, z, deg) => {
 function getGeometry(vw, vh) {
   const W = Math.min(vw * 0.6, vh * 1.25);
   const dispW = W * (1 - 2 * PAD);
-  const dispH = (dispW * LOGICAL_H) / LOGICAL_W;
+  const dispH = (dispW * BASE_H) / BASE_W;
   const D = dispH + 2 * W * PAD; // lid height == deck depth
   const tb = W * 0.012; // base thickness
   const tl = W * 0.007; // lid thickness
   const R = W * 0.012;
   const S = Math.min(vh / dispH, vw / dispW); // zoom so the display fills the viewport
 
+  // On smaller screens a 1280px-wide desktop would shrink to unreadable text, so the logical
+  // display gets smaller too (never below 860px wide), keeping the UI at a readable size.
+  const lw = Math.round(Math.min(BASE_W, Math.max(860, (dispW * S) / 0.9)));
+  const lh = Math.round((lw * BASE_H) / BASE_W);
+
   // Where the display centre ends up when the lid is open and the rig is tilted to face the camera.
   let [yl, zl] = rotX(-D / 2, 0, LID_OPEN); // lid swings about the hinge
   zl += -D / 2; // laptop group is shifted so the rig origin is the deck centre
   const [yf, zf] = rotX(yl, zl, -LID_OPEN); // rig tilt that cancels the lid angle
-  return { W, dispW, dispH, D, tb, tl, R, S, yf, zf };
+  return { W, dispW, dispH, D, tb, tl, R, S, yf, zf, lw, lh };
 }
 
 function useViewport() {
@@ -46,7 +51,18 @@ function useViewport() {
     let t;
     const onResize = () => {
       clearTimeout(t);
-      t = setTimeout(() => setVp(read()), 150);
+      t = setTimeout(() => {
+        const next = read();
+        // On touch devices, ignore small height-only changes (browser toolbars sliding in and out),
+        // otherwise the scroll animation would rebuild while the user is scrolling.
+        // On laptops/desktops every size change counts, or the final zoom would be computed for a stale height.
+        const touch = window.matchMedia("(pointer: coarse)").matches;
+        setVp((prev) =>
+          touch && next.vw === prev.vw && Math.abs(next.vh - prev.vh) < 120
+            ? prev
+            : next,
+        );
+      }, 150);
     };
     window.addEventListener("resize", onResize);
     return () => {
@@ -65,7 +81,7 @@ const BRUSH =
   "repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, rgba(0,0,0,0.08) 1px, rgba(0,0,0,0.08) 2px)";
 
 function Laptop({ geo, bgRef, hintRef, moreRef, onScale, onLive }) {
-  const { W, dispW, dispH, D, tb, tl, R, S, yf, zf } = geo;
+  const { W, dispW, dispH, D, tb, tl, R, S, yf, zf, lw, lh } = geo;
 
   const zoomRef = useRef(null);
   const tiltRef = useRef(null);
@@ -94,7 +110,7 @@ function Laptop({ geo, bgRef, hintRef, moreRef, onScale, onLive }) {
 
     const measure = () => {
       const w = displayRef.current?.getBoundingClientRect().width;
-      if (w) onScale(w / LOGICAL_W);
+      if (w) onScale(w / lw);
     };
 
     const ctx = gsap.context(() => {
@@ -389,14 +405,14 @@ function Laptop({ geo, bgRef, hintRef, moreRef, onScale, onLive }) {
                         position: "absolute",
                         top: 0,
                         left: 0,
-                        width: LOGICAL_W,
-                        height: LOGICAL_H,
+                        width: lw,
+                        height: lh,
                         transformOrigin: "top left",
-                        transform: `scale(${dispW / LOGICAL_W})`,
+                        transform: `scale(${dispW / lw})`,
                         pointerEvents: interactive ? "auto" : "none",
                       }}
                     >
-                      <MacScreen isMacOpen={screenOn} />
+                      <MacScreen isMacOpen={screenOn} size={{ w: lw, h: lh }} />
                     </div>
 
                     {/* notch + camera */}
@@ -506,7 +522,8 @@ function Laptop({ geo, bgRef, hintRef, moreRef, onScale, onLive }) {
 
 export default function MacBook() {
   const { vw, vh } = useViewport();
-  const isDesktop = vw >= 768;
+  // Phones (and landscape phones) get the plain full-screen desktop instead of the 3D laptop
+  const isDesktop = vw >= 768 && vh >= 520;
   const geo = useMemo(() => getGeometry(vw, vh), [vw, vh]);
 
   const sectionRef = useRef(null);

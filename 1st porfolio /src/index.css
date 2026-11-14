@@ -925,3 +925,11 @@ body::-webkit-scrollbar {
 .mac-inert * {
   pointer-events: none !important;
 }
+
+/* Touch devices: 16px inputs stop iOS Safari zooming the page on focus */
+@media (pointer: coarse) {
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}

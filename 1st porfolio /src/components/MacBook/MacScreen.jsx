@@ -54,7 +54,7 @@ const WINDOW_MENU = [
 ];
 
 // Isolated so the clock tick doesn't re-render the whole desktop
-function Clock() {
+function Clock({ short = false }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 15000);
@@ -62,12 +62,13 @@ function Clock() {
   }, []);
   return (
     <span className="whitespace-nowrap">
-      {now.toLocaleDateString([], {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      })}
-      {"\u2002"}
+      {!short &&
+        now.toLocaleDateString([], {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        })}
+      {!short && "\u2002"}
       {now.toLocaleTimeString([], {
         hour: "numeric",
         minute: "2-digit",
@@ -77,14 +78,26 @@ function Clock() {
   );
 }
 
-export default function MacScreen({ isMacOpen = false, compact = false }) {
+export default function MacScreen({
+  isMacOpen = false,
+  compact = false,
+  size = { w: 1280, h: 832 },
+}) {
   const scale = useContext(ScreenScale);
+  // Windows are fitted to the (logical) screen so nothing starts off-screen on smaller displays
   const layout = (id) => {
     const l = LAYOUT[id];
+    if (compact)
+      return { defaultPosition: { x: 8, y: 8 }, width: l.width, height: 4000 };
+    const w = Math.min(l.width, size.w - 16);
+    const h = Math.min(l.height, size.h - 28 - 100);
     return {
-      defaultPosition: compact ? { x: 8, y: 8 } : { x: l.x, y: l.y },
-      width: l.width,
-      height: l.height,
+      defaultPosition: {
+        x: Math.max(8, Math.min(l.x, size.w - w - 8)),
+        y: Math.max(8, Math.min(l.y, size.h - 28 - h - 100)),
+      },
+      width: w,
+      height: h,
     };
   };
 
@@ -239,6 +252,7 @@ export default function MacScreen({ isMacOpen = false, compact = false }) {
     onClose: () => closeWindow(id),
     onMinimize: () => minimizeWindow(id),
     onFocus: () => bringToFront(id),
+    bottomInset: compact ? "5.5rem" : "6rem",
   });
 
   const menuBtn =
@@ -329,9 +343,11 @@ export default function MacScreen({ isMacOpen = false, compact = false }) {
               </div>
             )}
           </div>
-          <span className={`${menuBtn} hidden sm:inline-flex items-center`}>
-            Help
-          </span>
+          {!compact && (
+            <span className={`${menuBtn} hidden sm:inline-flex items-center`}>
+              Help
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-3 pr-1.5 shrink-0">
@@ -355,7 +371,7 @@ export default function MacScreen({ isMacOpen = false, compact = false }) {
           <span className="hidden sm:inline-flex">
             <ControlIcon />
           </span>
-          <Clock />
+          <Clock short={compact} />
         </div>
       </div>
 
@@ -429,8 +445,11 @@ export default function MacScreen({ isMacOpen = false, compact = false }) {
 
         {/* ---------- Dock ---------- */}
         <div
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-end gap-2 px-2.5 pt-2 pb-2 rounded-[24px] z-50"
+          className={`absolute left-1/2 -translate-x-1/2 flex items-end z-50 ${compact ? "gap-1 px-1.5 pt-1.5 pb-1.5 rounded-[20px]" : "bottom-2 gap-2 px-2.5 pt-2 pb-2 rounded-[24px]"}`}
           style={{
+            bottom: compact
+              ? "calc(0.5rem + env(safe-area-inset-bottom, 0px))"
+              : undefined,
             background: "rgba(255,255,255,0.14)",
             backdropFilter: "blur(28px) saturate(1.6)",
             WebkitBackdropFilter: "blur(28px) saturate(1.6)",
@@ -440,50 +459,63 @@ export default function MacScreen({ isMacOpen = false, compact = false }) {
           onMouseMove={handleDockMove}
           onMouseLeave={resetDock}
         >
-          {dockItems.map((item, index) => {
-            if (item.type === "separator") {
+          {dockItems
+            .filter(
+              (item) =>
+                !compact ||
+                [
+                  "projects",
+                  "about",
+                  "terminal",
+                  "skills",
+                  "contact",
+                  "resume",
+                ].includes(item.id),
+            )
+            .map((item, index) => {
+              if (item.type === "separator") {
+                return (
+                  <div
+                    key={index}
+                    className="w-px h-[46px] bg-white/25 mx-0.5 self-center"
+                  />
+                );
+              }
               return (
                 <div
-                  key={index}
-                  className="w-px h-[46px] bg-white/25 mx-0.5 self-center"
-                />
-              );
-            }
-            return (
-              <div
-                key={item.id}
-                className="relative group flex flex-col items-center"
-              >
-                <div
-                  className="absolute bottom-full mb-[68px] opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none px-3 py-1 rounded-md text-[12px] text-white whitespace-nowrap"
-                  style={{
-                    background: "rgba(40,40,44,0.92)",
-                    boxShadow:
-                      "0 4px 14px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.2)",
-                  }}
+                  key={item.id}
+                  className="relative group flex flex-col items-center"
                 >
-                  {item.label}
+                  <div
+                    className="absolute bottom-full mb-[68px] opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none px-3 py-1 rounded-md text-[12px] text-white whitespace-nowrap"
+                    style={{
+                      background: "rgba(40,40,44,0.92)",
+                      boxShadow:
+                        "0 4px 14px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.2)",
+                    }}
+                  >
+                    {item.label}
+                  </div>
+
+                  <button
+                    ref={(el) => (dockRefs.current[item.id] = el)}
+                    onClick={item.action}
+                    className={`${compact ? "w-[44px] h-[44px]" : "w-[54px] h-[54px]"} cursor-default transition-transform duration-100 ease-out active:brightness-75`}
+                    style={{
+                      transformOrigin: "bottom center",
+                      filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.35))",
+                    }}
+                    aria-label={item.label}
+                  >
+                    {item.icon}
+                  </button>
+
+                  <span
+                    className={`w-1 h-1 rounded-full mt-1 bg-white/90 ${openWindows[item.id] ? "opacity-100" : "opacity-0"}`}
+                  />
                 </div>
-
-                <button
-                  ref={(el) => (dockRefs.current[item.id] = el)}
-                  onClick={item.action}
-                  className="w-[54px] h-[54px] cursor-default transition-transform duration-100 ease-out active:brightness-75"
-                  style={{
-                    transformOrigin: "bottom center",
-                    filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.35))",
-                  }}
-                  aria-label={item.label}
-                >
-                  {item.icon}
-                </button>
-
-                <span
-                  className={`w-1 h-1 rounded-full mt-1 bg-white/90 ${openWindows[item.id] ? "opacity-100" : "opacity-0"}`}
-                />
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>

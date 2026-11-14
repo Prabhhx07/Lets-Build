@@ -123,21 +123,18 @@ export default function ContactWindow() {
   };
 
   return (
-    <div className="p-5 space-y-4 text-[13px] text-gray-200 select-none">
+    <div className="p-4 @md:p-5 space-y-4 text-[13px] text-gray-200 select-none">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col @md:flex-row items-start justify-between gap-3 @md:gap-4">
         <div>
           <h3 className="text-[18px] font-bold text-white">
             Let&apos;s work together
           </h3>
-          <p className="mt-1 text-[12.5px] leading-relaxed text-gray-400 max-w-[360px]">
-            Internships, collaborations or just a chat. I usually reply within a
-            day.
-          </p>
+          <p className="mt-1 text-[12.5px] leading-relaxed text-gray-400 max-w-[360px]"></p>
         </div>
         <div className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10.5px] text-emerald-300">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          Open to internships,new project ideas
+          Open to internships and new projects
         </div>
       </div>
 
@@ -204,9 +201,7 @@ export default function ContactWindow() {
         />
 
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[11px] text-gray-500">
-
-          </span>
+          <span className="text-[11px] text-gray-500"></span>
           <button
             onClick={send}
             disabled={!canSend}
@@ -222,7 +217,7 @@ export default function ContactWindow() {
         <div className="mb-2 px-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500">
           Find me online
         </div>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-1 @md:grid-cols-2 gap-2.5">
           {networks.map(({ key, label, Icon, handle }) => (
             <a
               key={key}

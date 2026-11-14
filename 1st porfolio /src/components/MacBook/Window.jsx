@@ -20,6 +20,7 @@ export default function Window({
   defaultPosition = { x: 0, y: 0 },
   width = 540,
   height = 380,
+  bottomInset = "1rem", // keeps windows clear of the dock
   children,
 }) {
   const nodeRef = useRef(null);
@@ -48,6 +49,7 @@ export default function Window({
           bounds="parent"
           disabled={isMax}
           scale={scale}
+          allowMobileScroll
           position={isMax ? { x: 0, y: 0 } : pos}
           onStart={onFocus}
           onStop={(_, d) => !isMax && setPos({ x: d.x, y: d.y })}
@@ -62,8 +64,8 @@ export default function Window({
               fontFamily: FONT,
               width: isMax ? "100%" : `min(${width}px, calc(100% - 1rem))`,
               height: isMax
-                ? "calc(100% - 5.5rem)"
-                : `min(${height}px, calc(100% - 1rem))`,
+                ? `calc(100% - ${bottomInset})`
+                : `min(${height}px, calc(100% - ${bottomInset}))`,
               pointerEvents: isMinimized ? "none" : "auto",
             }}
           >
@@ -90,6 +92,7 @@ export default function Window({
               <div
                 className="win-titlebar relative h-[34px] shrink-0 flex items-center select-none cursor-default"
                 style={{
+                  touchAction: "none", // the title bar drags; the content below still scrolls by touch
                   background: isFocused
                     ? "linear-gradient(#3b3b3e, #2e2e31)"
                     : "#29292b",
@@ -147,7 +150,7 @@ export default function Window({
               </div>
 
               {/* Content scrolls inside the window */}
-              <GuardedScroll className="win-content flex-1 min-h-0 bg-[#1e1e20]">
+              <GuardedScroll className="win-content @container flex-1 min-h-0 bg-[#1e1e20]">
                 {children}
               </GuardedScroll>
             </motion.div>

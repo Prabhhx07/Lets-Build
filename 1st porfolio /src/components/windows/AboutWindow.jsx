@@ -13,9 +13,11 @@ const label =
 
 export default function AboutWindow({ onOpenWindow }) {
   return (
-    <div className="p-5 space-y-4 text-[13px] text-gray-200 select-none">
+    <div className="p-4 @md:p-5 space-y-4 text-[13px] text-gray-200 select-none">
       {/* Header */}
-      <div className={`${card} p-4 flex items-center gap-4`}>
+      <div
+        className={`${card} p-4 flex flex-col @md:flex-row @md:items-center gap-4`}
+      >
         <div className="relative shrink-0">
           <img
             src={personalInfo.avatar}
@@ -39,14 +41,16 @@ export default function AboutWindow({ onOpenWindow }) {
           <p className="text-[12px] text-gray-300 mt-0.5">
             {personalInfo.subtitle}
           </p>
-
+          <p className="text-[11px] text-gray-500 mt-0.5">
+            {personalInfo.education}
+          </p>
           <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10.5px] text-emerald-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             {personalInfo.status}
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 shrink-0">
+        <div className="flex @md:flex-col gap-2 shrink-0">
           <button
             onClick={() => onOpenWindow?.("contact")}
             className="rounded-lg bg-blue-600 hover:bg-blue-500 px-3.5 py-1.5 text-[11.5px] font-semibold text-white transition-colors cursor-pointer"
@@ -65,7 +69,7 @@ export default function AboutWindow({ onOpenWindow }) {
       </div>
 
       {/* Quick facts */}
-      <div className="grid grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-1 @md:grid-cols-3 gap-2.5">
         {quickFacts.map((f) => (
           <div key={f.label} className={`${card} px-3 py-2.5`}>
             <div className={label}>{f.label}</div>
@@ -87,7 +91,7 @@ export default function AboutWindow({ onOpenWindow }) {
       {/* What I bring */}
       <div>
         <div className={`${label} mb-2 px-1`}>What I bring</div>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-1 @xl:grid-cols-2 gap-2.5">
           {strengths.map((s, i) => (
             <div key={s.title} className={`${card} p-3.5`}>
               <div className="flex items-center gap-2">

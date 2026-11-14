@@ -65,7 +65,7 @@ export default function ProjectsWindow() {
   return (
     <div className="flex h-full min-h-0 text-[13px] text-gray-200 select-none bg-[#1e1e20]">
       {/* Sidebar */}
-      <div className="w-[170px] shrink-0 bg-[#18181a] border-r border-black/50 p-3 overflow-y-auto">
+      <div className="hidden @xl:block w-[170px] shrink-0 bg-[#18181a] border-r border-black/50 p-3 overflow-y-auto">
         <div className="px-2 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500">
           Favorites
         </div>
@@ -106,8 +106,8 @@ export default function ProjectsWindow() {
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 min-h-0">
-        <div className="h-11 shrink-0 px-4 flex items-center justify-between gap-3 border-b border-black/40 bg-white/[0.02]">
-          <div className="flex items-center gap-2 min-w-0 text-[12px]">
+        <div className="h-11 shrink-0 px-3 @md:px-4 flex items-center justify-between gap-3 border-b border-black/40 bg-white/[0.02]">
+          <div className="hidden @sm:flex items-center gap-2 min-w-0 text-[12px]">
             <span className="text-gray-500">Finder</span>
             <span className="text-gray-600">›</span>
             <span className="font-semibold text-white truncate">{heading}</span>
@@ -121,17 +121,34 @@ export default function ProjectsWindow() {
             placeholder="Search"
             aria-label="Search projects"
             spellCheck={false}
-            className="h-7 w-44 rounded-md bg-white/10 px-2.5 text-[12px] text-white placeholder:text-gray-500 outline-none focus:bg-white/15 focus:ring-1 focus:ring-blue-500/60"
+            className="h-7 w-full @sm:w-44 rounded-md bg-white/10 px-2.5 text-[12px] text-white placeholder:text-gray-500 outline-none focus:bg-white/15 focus:ring-1 focus:ring-blue-500/60"
           />
         </div>
 
-        <GuardedScroll className="flex-1 min-h-0 p-4">
+        {/* Filter chips replace the sidebar on narrow windows */}
+        <div className="@xl:hidden shrink-0 flex gap-1.5 overflow-x-auto px-3 py-2 border-b border-black/40">
+          {["all", "featured", ...categories].map((key) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`shrink-0 rounded-full px-3 py-1 text-[11.5px] cursor-pointer transition-colors ${
+                filter === key
+                  ? "bg-blue-600 text-white font-medium"
+                  : "bg-white/10 text-gray-300"
+              }`}
+            >
+              {key === "all" ? "All" : key === "featured" ? "Featured" : key}
+            </button>
+          ))}
+        </div>
+
+        <GuardedScroll className="flex-1 min-h-0 p-3 @md:p-4">
           {visible.length === 0 ? (
             <div className="h-full flex items-center justify-center text-[12.5px] text-gray-500">
               No projects match your search.
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-1 @2xl:grid-cols-2 gap-3.5">
               {visible.map((p) => {
                 const cat = CATEGORY[p.category] ?? FALLBACK;
                 return (
